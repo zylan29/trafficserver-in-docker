@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Clean old configuration
+sed -i '/^[^#]/d' /usr/local/etc/trafficserver/storage.config
+sed -i '/^[^#]/d' /usr/local/etc/trafficserver/remap.config
+
+# Default parameters
+STORAGE=${STORAGE:-"/cache:-1G"}
+REMAP=${REMAP:-"orange.org:-192.168.122.114"}
+
+# Enable cache inspector.
+if [ ! -z "$TRAFFICSERVER_DEBUG" ]
+then
+    echo >&2 "Enabling debug mode"
+    echo "CONFIG proxy.config.http_ui_enabled INT $TRAFFICSERVER_DEBUG" >> /usr/local/etc/trafficserver/records.config
+    echo "regex_map http://([a-z\-0-9\.]+)/trafficservercache/ http://{cache}" >> /usr/local/etc/trafficserver/remap.config
+fi
+
+for storage_conf in $STORAGE
+do
+    storage=(`echo $storage_conf|tr ":-" " "`)
+    mkdir -p ${storage[0]}
+    echo "${storage[0]} ${storage[1]}" >> /usr/local/etc/trafficserver/storage.config
+    echo >&2 "Adding storage ${storage[@]}"
+done
+
+# Add origin servers to remap config.
+for remap_conf in $REMAP
+do
+    remap=(`echo $remap_conf|tr -d "http://"| tr -d "https://"|tr ":-" " "`)
+    echo "regex_map http://${remap[0]}/ http://${remap[1]}/" >> /usr/local/etc/trafficserver/remap.config
+    echo "regex_map https://${remap[0]}/ https://${remap[1]}/" >> /usr/local/etc/trafficserver/remap.config
+    echo >&2 "Remapping ${remap[0]} to ${remap[1]}"
+done
+# Start!
+exec /usr/local/bin/traffic_server -k -K

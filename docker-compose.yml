@@ -1,0 +1,17 @@
+version: '3.0'
+services:
+    trafficserver:
+        build:
+            context: .
+        image: trafficserver:8.0.5
+        container_name: trafficserver
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+        extra_hosts:
+            - "orange.org:192.168.122.114"
+        environment:
+            - STORAGE=/cache1:-10G /cache2:-1G
+            - REMAP=orange.org:-192.168.122.114
+
