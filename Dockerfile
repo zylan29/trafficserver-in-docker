@@ -1,7 +1,5 @@
 FROM centos:8
 
-MAINTAINER Ziyang Li "https://github.com/zylan29"
-
 RUN yum update -y
 RUN yum install -y pkgconfig libtool gcc gcc-c++ make openssl openssl-devel pcre libcap flex hwloc lua zlib curl tcl-devel pcre-devel bzip2
 

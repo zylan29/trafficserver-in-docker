@@ -9,9 +9,6 @@ services:
         ports:
             - "80:80"
             - "443:443"
-        extra_hosts:
-            - "orange.org:192.168.122.114"
         environment:
-            - STORAGE=/cache1:-10G /cache2:-1G
-            - REMAP=orange.org:-192.168.122.114
-
+            - STORAGE=/cache1:-10G /cache2:-10G
+            - REMAP=orange1.org:-192.168.122.120 orange2.org:-192.168.122.172
