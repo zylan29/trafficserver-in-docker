@@ -27,7 +27,7 @@ done
 # Add origin servers to remap config.
 for remap_conf in $REMAP
 do
-    remap=(`echo $remap_conf|tr -d "http://"| tr -d "https://"|tr ":-" " "`)
+    remap=(`echo $remap_conf|awk -F ":-" '{print $1" "$2}'`)
     echo "regex_map http://${remap[0]}/ http://${remap[1]}/" >> /usr/local/etc/trafficserver/remap.config
     echo "regex_map https://${remap[0]}/ https://${remap[1]}/" >> /usr/local/etc/trafficserver/remap.config
     echo >&2 "Remapping ${remap[0]} to ${remap[1]}"
