@@ -3,13 +3,13 @@ FROM centos:8
 RUN yum update -y
 RUN yum install -y pkgconfig libtool gcc gcc-c++ make openssl openssl-devel pcre libcap flex hwloc lua zlib curl tcl-devel pcre-devel bzip2
 
-COPY --chown=root:root ./trafficserver-8.0.5.tar.bz2 /root/
+COPY --chown=root:root ./trafficserver-8.0.6.tar.bz2 /root/
 
 WORKDIR /root/
 
-RUN tar -xvf trafficserver-8.0.5.tar.bz2
+RUN tar -xvf trafficserver-8.0.6.tar.bz2
 
-WORKDIR /root/trafficserver-8.0.5
+WORKDIR /root/trafficserver-8.0.6
 
 RUN ./configure && make && make install
 

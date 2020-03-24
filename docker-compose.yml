@@ -3,7 +3,7 @@ services:
     trafficserver:
         build:
             context: .
-        image: trafficserver:8.0.5
+        image: trafficserver:8.0.6
         container_name: trafficserver
         restart: unless-stopped
         ports:
