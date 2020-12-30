@@ -3,7 +3,9 @@ services:
     trafficserver:
         build:
             context: .
-        image: trafficserver:8.0.6
+            args: 
+                ats_version: 8.1.1
+        image: trafficserver
         container_name: trafficserver
         restart: unless-stopped
         ports:
